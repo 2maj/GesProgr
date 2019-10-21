@@ -69,7 +69,9 @@ public class Vue extends JFrame implements ActionListener {
         this.setTitle("TP 3");
         setDefaultCloseOperation(EXIT_ON_CLOSE); // Fermeture fenêtre = arrêt de l'application 
         setBounds(10, 10, 600, 300);
-
+        Edit edit = new Edit();
+        edit.init();
+        pane.add(edit.getPanelMenu());
         this.add(pane); // Ajout du panel à notre frame de base
     }
 

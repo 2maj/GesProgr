@@ -15,18 +15,32 @@ import java.text.SimpleDateFormat;
 public class Constantes {
 
     public static final String OCCUPATION = "Programmeur";
+    
     public static final String URL = "jdbc:derby://localhost:1527/BDTPJAVA";
+    
     public static final String USER = "adm";
+    
     public static final String MDP = "adm";
+    
     public static final String REQUETE_TOUS = "SELECT * from PROGRAMMEUR";
-    public static final String REQUETE_UNIQUE = "SELECT * from PROGRAMMEUR WHERE nom = ?";
-    public static final String REQUETE_UPDATE = "UPDATE PROGRAMMEUR SET NOM = ?, PRENOM = ?,"
-            + " ANNAISSANCE = ?, SALAIRE = ?, PRIME = ? WHERE PSEUDO = ?";
+    
+    public static final String REQUETE_UNIQUE = "SELECT * from PROGRAMMEUR WHERE matricule = ?";
+    
+    public static final String REQUETE_UPDATE = "UPDATE PROGRAMMEUR SET "
+            + "NOM = ?, PRENOM = ?, ADRESSE = ?, PSEUDO = ?, RESPONSABLE = ?, HOBBY = ?,"
+            + " DATE_NAISS = ?, DATE_EMB = ? WHERE MATRICULE = ?";
+    
     public static final String REQUETE_INSERT = "INSERT INTO PROGRAMMEUR"
             + "(MATRICULE, NOM, PRENOM, ADRESSE, PSEUDO, RESPONSABLE, HOBBY, DATE_NAISS, DATE_EMB)"
             + " VALUES(?,?,?,?,?,?,?,?,?)";
+    
     public static final Font DEFAULTFONT = new Font("Sans-Serif",Font.TRUETYPE_FONT, 12);
     
     public static final SimpleDateFormat DATE_FORMAT= new SimpleDateFormat("Y-M-d");
-
+    
+    public static final SimpleDateFormat DATE_FORMAT_Y= new SimpleDateFormat("Y");
+    
+    public static final SimpleDateFormat DATE_FORMAT_M= new SimpleDateFormat("M");
+    
+    public static final SimpleDateFormat DATE_FORMAT_D= new SimpleDateFormat("d");
 }

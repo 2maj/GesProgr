@@ -89,7 +89,8 @@ public class Edit extends JFrame implements ActionListener{
     private String contenuDateNaiss;
     private String contenuDateEmb;
     
-    static final String[] OPTIONSMOIS = {"1","2","3","4","5","6","7","8","9","10","11","12"};
+    //static final String[] OPTIONSMOIS = {"1","2","3","4","5","6","7","8","9","10","11","12"};
+    static final String[] OPTIONSMOIS = {"01","02","03","04","05","06","07","08","09","10","11","12"};
     static final String JOUR = "jour";
     static final String ANNEE = "année";
     static final int COLUMNS = 10;
@@ -97,7 +98,7 @@ public class Edit extends JFrame implements ActionListener{
 
     public void init() {
         dt = new ActionsBD();
-        progrBean = dt.getProgrammeur("Mafalda");
+        progrBean = dt.getProgrammeur("17549");
         
         if (progrBean == null) {
             
@@ -114,26 +115,26 @@ public class Edit extends JFrame implements ActionListener{
         
         btnPanel = new JPanel();
         btnPanel.setLayout(new GridLayout());
-        
-        Date aujourdhui = new Date();
-
-        System.out.println(Constantes.DATE_FORMAT.format(aujourdhui));
-        
+                
         btnBottom();
         
         editField();
         
-        champMatricule.setText(progrBean.getPseudo());
+        addingListenerToField();
+        
+        champMatricule.setText(progrBean.getMatricule());
         champNom.setText(progrBean.getNom());
         champPrenom.setText(progrBean.getPrenom());
-        //champAdress.SetText(progrBean.getAdress());
-        //champResponsable.setText(progrBean.getResponsable());
-        //champHobby.setText(progrBean.getHobby());
-        //champPseudo.setText(progrBean.getPseudo());
-        //champJourEmb.setText(progrBean.getJourEmb());
-        //champJourNaiss.setText(progrBean.getJourNaiss());
-        //champAnneeEmb.setText(progrBean.getAnneeEmb());
-        //champAnneeNaiss.setText(progrBean.getAnneeNaiss());
+        champAdress.setText(progrBean.getAdresse());
+        champResponsable.setText(progrBean.getResponsable());
+        champHobby.setText(progrBean.getHobby());
+        champPseudo.setText(progrBean.getPseudo());
+        champJourEmb.setText(Constantes.DATE_FORMAT_D.format(progrBean.getDateEmb()));
+        champJourNaiss.setText(Constantes.DATE_FORMAT_D.format(progrBean.getDateNaiss()));
+        champMoisNaiss.setSelectedIndex(Integer.parseInt(Constantes.DATE_FORMAT_M.format(progrBean.getDateNaiss())) -1);
+        champMoisEmb.setSelectedIndex(Integer.parseInt(Constantes.DATE_FORMAT_M.format(progrBean.getDateEmb())) -1);
+        champAnneeEmb.setText(Constantes.DATE_FORMAT_Y.format(progrBean.getDateEmb()));
+        champAnneeNaiss.setText(Constantes.DATE_FORMAT_Y.format(progrBean.getDateNaiss()));
         
         
         
@@ -147,9 +148,6 @@ public class Edit extends JFrame implements ActionListener{
         mainPanel.add(btnPanel, BorderLayout.SOUTH);
         btnPanel.setBorder(new EmptyBorder(0,30,10,30));
         
-       
-        //mainPanel.add(scroll);
-
         
 
         /**
@@ -176,7 +174,6 @@ public class Edit extends JFrame implements ActionListener{
         champMatricule = new JTextField();
         
         champMatricule.setColumns(COLUMNS);
-        champMatricule.getDocument().addDocumentListener(new InputTextListener());
         
         matriculePanel.add(labelMatricule);
         matriculePanel.add(champMatricule);
@@ -186,6 +183,7 @@ public class Edit extends JFrame implements ActionListener{
         labelNom.setFont(Constantes.DEFAULTFONT);
         champNom = new JTextField();
         champNom.setColumns(COLUMNS/2);
+                
         JPanel nomPanel = new JPanel();
         nomPanel.setLayout(new GridLayout());
         nomPanel.add(labelNom);
@@ -198,6 +196,7 @@ public class Edit extends JFrame implements ActionListener{
         labelPrenom.setFont(Constantes.DEFAULTFONT);
         champPrenom = new JTextField();
         champPrenom.setColumns(COLUMNS);
+        
         JPanel prenomPanel = new JPanel(new GridLayout());
         prenomPanel.add(labelPrenom);
         prenomPanel.add(champPrenom);
@@ -216,6 +215,7 @@ public class Edit extends JFrame implements ActionListener{
         labelPseudo.setFont(new Font("Sans-Serif",Font.TRUETYPE_FONT, 12));
         champPseudo = new JTextField();
         champPseudo.setColumns(COLUMNS);
+        
         JPanel PseudoPanel = new JPanel(new GridLayout());
         PseudoPanel.add(labelPseudo);
         PseudoPanel.add(champPseudo);
@@ -225,6 +225,7 @@ public class Edit extends JFrame implements ActionListener{
         labelResponsable.setFont(Constantes.DEFAULTFONT);
         champResponsable = new JTextField();
         champResponsable.setColumns(COLUMNS);
+        
         JPanel ResponsablePanel = new JPanel(new GridLayout());
         ResponsablePanel.add(labelResponsable);
         ResponsablePanel.add(champResponsable);
@@ -265,6 +266,7 @@ public class Edit extends JFrame implements ActionListener{
         champJourEmb = new JTextField();
         champJourEmb.setText(JOUR);
         champJourEmb.setColumns(COLUMNS/2);
+
         champAnneeEmb = new JTextField();
         champAnneeEmb.setText(ANNEE);
         champAnneeEmb.setColumns(COLUMNS/2);
@@ -285,8 +287,26 @@ public class Edit extends JFrame implements ActionListener{
         editPanel.add(dateEmb, c);
     }
     
+    public void addingListenerToField(){
+        champMatricule.getDocument().addDocumentListener(new InputTextListener());
+        champNom.getDocument().addDocumentListener(new InputTextListener());
+        champPrenom.getDocument().addDocumentListener(new InputTextListener());
+        champPseudo.getDocument().addDocumentListener(new InputTextListener());
+        champResponsable.getDocument().addDocumentListener(new InputTextListener());
+        champJourNaiss.getDocument().addDocumentListener(new InputNumberListener());
+        champAnneeNaiss.getDocument().addDocumentListener(new InputNumberListener());
+        champJourEmb.getDocument().addDocumentListener(new InputNumberListener());
+        champAnneeEmb.getDocument().addDocumentListener(new InputNumberListener());
+
+    }
+    
+    public JPanel getPanelMenu(){
+        return this.mainPanel;
+    }
+    
     public void btnBottom(){
         btnReinit = new JButton("Réinitialiser");
+        btnReinit.setEnabled(false);
         btnReinit.setFont(Constantes.DEFAULTFONT);
         btnReinit.setSize(5,5);
         btnPanel.add(btnReinit);
@@ -298,6 +318,7 @@ public class Edit extends JFrame implements ActionListener{
         btnValider.addActionListener(this);
         
         btnRechercher = new JButton("Rechercher");
+        btnRechercher.setEnabled(false);
         btnRechercher.setFont(Constantes.DEFAULTFONT);
         btnPanel.add(btnRechercher);
         btnRechercher.addActionListener(this);
@@ -313,12 +334,21 @@ public class Edit extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent event) {
         if (event.getSource() == btnValider) {
             dt = new ActionsBD();
+            
+            //contenuMatricule = champMatricule.getText();
+            //contenuPrenom = champPrenom.getText();
             contenuNom = champNom.getText();
-            contenuMatricule = champMatricule.getText();
-            contenuPrenom = champPrenom.getText();
+            /*
+            contenuAdress = champAdress.getText();
+            contenuResponsable = champResponsable.getText();
+            contenuHobby = champHobby.getText();
+            */
+            
             progrBean.setNom(contenuNom);
+            //progrBean.setAdresse(contenuAdress);
+            
             dt.setProgrammeur(progrBean);
-            System.out.println("Valider"+contenuNom);
+            System.out.println("Valider"+progrBean.toString());
             //JOptionPane.showMessageDialog(this, "Programmeur introuvable", "Echec", JOptionPane.ERROR_MESSAGE);
             dt.fermerRessources();
         }
@@ -333,6 +363,10 @@ public class Edit extends JFrame implements ActionListener{
             }
 
             dt.fermerRessources();
+        }
+        
+        if(event.getSource() == btnAnnuler){
+            
         }
     }
     

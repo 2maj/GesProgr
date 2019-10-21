@@ -5,33 +5,64 @@
  */
 package data;
 
+import myutil.Constantes;
+
+import java.util.Date;
+
 /**
  *
  * @author Jacques
  */
 public class ProgrammeurBean {
 
+    private String matricule;
     private String nom;
     private String prenom;
-    private int anNaissance;
-    private float salaire;
-    private float prime;
+    private String adresse;
     private String pseudo;
+    private String responsable;
+    private String hobby;
+    private Date dateEmb;
+    private Date dateNaiss;
 
     public ProgrammeurBean() {
+    }
+    
+     public ProgrammeurBean(String matricule, String nom, String prenom, String adresse, String pseudo, String responsable, String hobby, Date dateEmb, Date dateNaiss) {
+         this.matricule = matricule;
+         this.nom = nom;
+         this.prenom = prenom;
+         this.adresse = adresse;
+         this.pseudo = pseudo;
+         this.responsable = responsable;
+         this.hobby = hobby;
+         this.dateEmb = dateEmb;
+         this.dateNaiss = dateNaiss;
+         
     }
 
     @Override
     public String toString() {
-        String affichage = "Prénom : " + this.getPrenom() + "\n"
-                            + "Nom : " + this.getNom() + "\n"
-                            + "Année de naissance : " + this.getAnNaissance() + "\n"
-                            + "Salaire : " + this.getSalaire() + "\n"
-                            + "Prime : " + this.getPrime() + "\n"
-                            + "Pseudo : " + this.getPseudo() + "\n"
+        String affichage = "Matricule : " + this.getMatricule() + "\n"
+							+ "Nom : " + this.getNom() + "\n"
+							+ "Prénom : " + this.getPrenom() + "\n"
+							+ "Addresse : " + this.getAdresse() + "\n"
+							+ "Pseudo : " + this.getPseudo() + "\n"
+							+ "Responsable : " + this.getResponsable() + "\n"
+							+ "Hobby : " + this.getHobby() + "\n"
+							+ "Date de naissance : " + Constantes.DATE_FORMAT.format(this.getDateNaiss()) + "\n"
+							+ "Date Embauche : " + Constantes.DATE_FORMAT.format(this.getDateEmb()) + "\n"
                             + "\n";
 
         return affichage;
+    }
+
+    public String getMatricule() {
+        return matricule;
+    }
+
+    public void setMatricule(String matricule) {
+        this.matricule = matricule;
     }
 
     public String getNom() {
@@ -49,31 +80,15 @@ public class ProgrammeurBean {
     public void setPrenom(String prenom) {
         this.prenom = prenom;
     }
-
-    public int getAnNaissance() {
-        return anNaissance;
+	
+    public String getAdresse() {
+        return adresse;
     }
 
-    public void setAnNaissance(int anNaissance) {
-        this.anNaissance = anNaissance;
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
     }
-
-    public float getSalaire() {
-        return salaire;
-    }
-
-    public void setSalaire(float salaire) {
-        this.salaire = salaire;
-    }
-
-    public float getPrime() {
-        return prime;
-    }
-
-    public void setPrime(float prime) {
-        this.prime = prime;
-    }
-
+	
     public String getPseudo() {
         return pseudo;
     }
@@ -81,5 +96,36 @@ public class ProgrammeurBean {
     public void setPseudo(String pseudo) {
         this.pseudo = pseudo;
     }
+	
+    public String getResponsable() {
+        return responsable;
+    }
 
+    public void setResposable(String responsable) {
+        this.responsable = responsable;
+    }
+	
+    public String getHobby() {
+        return hobby;
+    }
+
+    public void setHobby(String hobby) {
+        this.hobby = hobby;
+    }
+
+    public Date getDateNaiss() {
+        return dateNaiss;
+    }
+
+    public void setDateNaiss(Date dateNaissance) {
+        this.dateNaiss = dateNaissance;
+    }
+
+    public Date getDateEmb() {
+        return dateEmb;
+    }
+
+    public void setDateEmb(Date dateEmb) {
+        this.dateEmb = dateEmb;
+    }
 }

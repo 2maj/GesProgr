@@ -11,7 +11,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import myutil.Constantes;
@@ -71,13 +73,13 @@ public class ActionsBD {
 
         try {
             while (rs.next()) {
-                prog = new ProgrammeurBean();
-                prog.setPrenom(rs.getString("PRENOM"));
-                prog.setNom(rs.getString("NOM"));
-                prog.setAnNaissance(rs.getInt("ANNAISSANCE"));
-                prog.setSalaire(rs.getFloat("SALAIRE"));
-                prog.setPrime(rs.getFloat("PRIME"));
-                prog.setPseudo(rs.getString("PSEUDO"));
+                prog = new ProgrammeurBean(
+                        rs.getString("MATRICULE"), rs.getString("NOM"),
+                        rs.getString("PRENOM"), rs.getString("ADRESSE"),
+                        rs.getString("PSEUDO") ,rs.getString("RESPONSABLE"),
+                        rs.getString("HOBBY"), convertFromSQLDateToJAVADate(rs.getDate("DATE_NAISS")),
+                        convertFromSQLDateToJAVADate(rs.getDate("DATE_EMB"))
+                );
                 listeProgrammeurs.add(prog);
             }
         } catch (SQLException sqle) {
@@ -92,16 +94,21 @@ public class ActionsBD {
      */
     public void setProgrammeur(ProgrammeurBean p){
         try {
+            //MATRICULE, NOM, PRENOM, ADRESSE, PSEUDO, RESPONSABLE, HOBBY, DATE_NAISS, DATE_EMB
             pstmt = dbConn.prepareStatement(Constantes.REQUETE_UPDATE);
+            //pstmt.setString(1, p.getMatricule());
             pstmt.setString(1, p.getNom());
             pstmt.setString(2, p.getPrenom());
-            pstmt.setString(3, Integer.toString(p.getAnNaissance()));
-            pstmt.setString(4, Float.toString(p.getSalaire()));
-            pstmt.setString(5, Float.toString(p.getPrime()));
-            pstmt.setString(6, p.getPseudo());
+            pstmt.setString(3, p.getAdresse());
+            pstmt.setString(4, p.getPseudo());
+            pstmt.setString(5, p.getResponsable());
+            pstmt.setString(6, p.getHobby());
+            pstmt.setDate(7, convertFromSQLDateToJAVADate(p.getDateNaiss()));
+            pstmt.setDate(8, convertFromSQLDateToJAVADate(p.getDateEmb()));
+            pstmt.setString(9, p.getMatricule());
             pstmt.executeUpdate();
             
-            
+            System.out.println("Setting");
         } catch (SQLException sqle) {
             Logger.getLogger(ActionsBD.class.getName()).log(Level.SEVERE, null, sqle);
         }
@@ -116,25 +123,46 @@ public class ActionsBD {
      * @return prog Une variable de type ProgrammeurBean
      *
      */
-    public ProgrammeurBean getProgrammeur(String nom) {
+    public ProgrammeurBean getProgrammeur(String matricule) {
         try {
             pstmt = dbConn.prepareStatement(Constantes.REQUETE_UNIQUE);
-            pstmt.setString(1, nom);
+            pstmt.setString(1, matricule);
             rs = pstmt.executeQuery();
 
             while (rs.next()) {
+                //MATRICULE, NOM, PRENOM, ADRESSE, PSEUDO, RESPONSABLE, HOBBY, DATE_NAISS, DATE_EMB
                 prog = new ProgrammeurBean();
-                prog.setPrenom(rs.getString("PRENOM"));
+                
+                prog.setMatricule(rs.getString("MATRICULE"));
                 prog.setNom(rs.getString("NOM"));
-                prog.setAnNaissance(rs.getInt("ANNAISSANCE"));
-                prog.setSalaire(rs.getFloat("SALAIRE"));
-                prog.setPrime(rs.getFloat("PRIME"));
+                prog.setPrenom(rs.getString("PRENOM"));
+                prog.setAdresse(rs.getString("ADRESSE"));
                 prog.setPseudo(rs.getString("PSEUDO"));
+                prog.setResposable(rs.getString("RESPONSABLE"));
+                prog.setHobby(rs.getString("HOBBY"));
+                prog.setDateNaiss(rs.getDate("DATE_NAISS"));
+                prog.setDateEmb(rs.getDate("DATE_EMB"));
+                
             }
         } catch (SQLException sqle) {
             Logger.getLogger(ActionsBD.class.getName()).log(Level.SEVERE, null, sqle);
         }
         return prog;
+    }
+    
+    public static java.util.Date convertFromSQLDateToJAVADate(
+            java.sql.Date sqlDate) {
+        java.util.Date javaDate = null;
+        if (sqlDate != null) {
+            javaDate = new Date(sqlDate.getTime());
+        }
+        return javaDate;
+    }
+    
+    public static java.sql.Date convertFromSQLDateToJAVADate(
+             java.util.Date javaDate) {
+        String str = Constantes.DATE_FORMAT.format(javaDate);
+        return new java.sql.Date (Timestamp.valueOf(str+" 00:00:00").getTime());
     }
 
     /**
