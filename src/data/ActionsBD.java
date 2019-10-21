@@ -85,6 +85,27 @@ public class ActionsBD {
         }
         return listeProgrammeurs;
     }
+    
+    /**
+     * 
+     * @param p
+     */
+    public void setProgrammeur(ProgrammeurBean p){
+        try {
+            pstmt = dbConn.prepareStatement(Constantes.REQUETE_UPDATE);
+            pstmt.setString(1, p.getNom());
+            pstmt.setString(2, p.getPrenom());
+            pstmt.setString(3, Integer.toString(p.getAnNaissance()));
+            pstmt.setString(4, Float.toString(p.getSalaire()));
+            pstmt.setString(5, Float.toString(p.getPrime()));
+            pstmt.setString(6, p.getPseudo());
+            pstmt.executeUpdate();
+            
+            
+        } catch (SQLException sqle) {
+            Logger.getLogger(ActionsBD.class.getName()).log(Level.SEVERE, null, sqle);
+        }
+    }
 
     /**
      * Cette méthode récupère toutes les infos d'un programmeur et retourne ce
