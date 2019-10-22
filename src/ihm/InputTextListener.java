@@ -19,10 +19,13 @@ public class InputTextListener implements DocumentListener{
     String newline = "\n";
  
     public void insertUpdate(DocumentEvent e) {
+        
         updateLog(e, "inserted into");
     }
     public void removeUpdate(DocumentEvent e) {
-        updateLog(e, "removed from");
+            updateLog(e, "removed from");
+      
+        
     }
     public void changedUpdate(DocumentEvent e) {
         //Plain text components do not fire these events
@@ -35,7 +38,7 @@ public class InputTextListener implements DocumentListener{
         System.out.println(
             changeLength + " character" +
             ((changeLength == 1) ? " " : "s ") +
-            action + doc.getProperty("name") + "." + newline +
-            "  Text length = " + doc.getLength() + newline);
+            action + doc + "." + newline +
+            "  Text length = " + doc.getLength()+ e + newline);
     }
 }

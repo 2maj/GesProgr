@@ -113,6 +113,28 @@ public class ActionsBD {
             Logger.getLogger(ActionsBD.class.getName()).log(Level.SEVERE, null, sqle);
         }
     }
+    
+    public void addProgrammeur(ProgrammeurBean p){
+        try {
+            //MATRICULE, NOM, PRENOM, ADRESSE, PSEUDO, RESPONSABLE, HOBBY, DATE_NAISS, DATE_EMB
+            pstmt = dbConn.prepareStatement(Constantes.REQUETE_INSERT);
+            pstmt.setString(1, p.getMatricule());
+            pstmt.setString(1, p.getNom());
+            pstmt.setString(2, p.getPrenom());
+            pstmt.setString(3, p.getAdresse());
+            pstmt.setString(4, p.getPseudo());
+            pstmt.setString(5, p.getResponsable());
+            pstmt.setString(6, p.getHobby());
+            pstmt.setDate(7, convertFromSQLDateToJAVADate(p.getDateNaiss()));
+            pstmt.setDate(8, convertFromSQLDateToJAVADate(p.getDateEmb()));
+            pstmt.setString(9, p.getMatricule());
+            pstmt.executeUpdate();
+            
+            System.out.println("Adding");
+        } catch (SQLException sqle) {
+            Logger.getLogger(ActionsBD.class.getName()).log(Level.SEVERE, null, sqle);
+        }
+    }
 
     /**
      * Cette méthode récupère toutes les infos d'un programmeur et retourne ce
@@ -161,8 +183,7 @@ public class ActionsBD {
     
     public static java.sql.Date convertFromSQLDateToJAVADate(
              java.util.Date javaDate) {
-        String str = Constantes.DATE_FORMAT.format(javaDate);
-        return new java.sql.Date (Timestamp.valueOf(str+" 00:00:00").getTime());
+        return new java.sql.Date (javaDate.getTime());
     }
 
     /**

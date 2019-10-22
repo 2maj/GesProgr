@@ -9,15 +9,16 @@ import data.ActionsBD;
 import data.ProgrammeurBean;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -25,21 +26,15 @@ import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import myutil.Constantes;
 
 /**
  *
  * @author moussa
  */
-public class Edit extends JFrame implements ActionListener{
-     // Déclaration des attributs
-    // L'initialisation se fera "en local" dans des méthodes
+public class Add extends JFrame implements ActionListener{
     private JButton btnAnnuler;
     private JButton btnValider;
     private JButton btnReinit;
@@ -85,8 +80,8 @@ public class Edit extends JFrame implements ActionListener{
     private String contenuResponsable;
     private String contenuHobby;
     private String contenuPseudo;
-    private String contenuDateNaiss;
-    private String contenuDateEmb;
+    private Date contenuDateNaiss;
+    private Date contenuDateEmb;
     
     //static final String[] OPTIONSMOIS = {"1","2","3","4","5","6","7","8","9","10","11","12"};
     static final String[] OPTIONSMOIS = {"01","02","03","04","05","06","07","08","09","10","11","12"};
@@ -96,13 +91,7 @@ public class Edit extends JFrame implements ActionListener{
     private ActionsBD dt;
 
     public void init() {
-        dt = new ActionsBD();
-        progrBean = dt.getProgrammeur("17549");
-        
-        if (progrBean == null) {
-            
-            JOptionPane.showMessageDialog(this, "Programmeur introuvable", "Echec", JOptionPane.ERROR_MESSAGE);
-        } else {
+       
         mainPanel = new JPanel(); // Créantion d'un mainPanell pour gérer les widgets
         mainPanel.setLayout(new BorderLayout(8,6));
        
@@ -120,25 +109,7 @@ public class Edit extends JFrame implements ActionListener{
         editField();
         
         addingListenerToField();
-        
-        champMatricule.setText(progrBean.getMatricule());
-        champNom.setText(progrBean.getNom());
-        champPrenom.setText(progrBean.getPrenom());
-        champAdress.setText(progrBean.getAdresse());
-        champResponsable.setText(progrBean.getResponsable());
-        champHobby.setText(progrBean.getHobby());
-        champPseudo.setText(progrBean.getPseudo());
-        champJourEmb.setText(Constantes.DATE_FORMAT_D.format(progrBean.getDateEmb()));
-        champJourNaiss.setText(Constantes.DATE_FORMAT_D.format(progrBean.getDateNaiss()));
-        champMoisNaiss.setSelectedIndex(Integer.parseInt(Constantes.DATE_FORMAT_M.format(progrBean.getDateNaiss())) -1);
-        champMoisEmb.setSelectedIndex(Integer.parseInt(Constantes.DATE_FORMAT_M.format(progrBean.getDateEmb())) -1);
-        champAnneeEmb.setText(Constantes.DATE_FORMAT_Y.format(progrBean.getDateEmb()));
-        champAnneeNaiss.setText(Constantes.DATE_FORMAT_Y.format(progrBean.getDateNaiss()));
-        
-        
-        
-
-        
+       
         matriculePanel.setBackground(Color.BLACK);
 
         mainPanel.add(matriculePanel, BorderLayout.NORTH);
@@ -147,8 +118,6 @@ public class Edit extends JFrame implements ActionListener{
         mainPanel.add(btnPanel, BorderLayout.SOUTH);
         btnPanel.setBorder(new EmptyBorder(0,30,10,30));
         
-        
-
         /**
          * Par défaut, notre frame n'est pas visible
          * Il faut donc forcer la visibilité à "true"
@@ -159,10 +128,6 @@ public class Edit extends JFrame implements ActionListener{
         setBounds(10, 10, 600, 300);
 
         this.add(mainPanel); // Ajout du mainPanell à notre frame de base
-        }
-
-        dt.fermerRessources();
-        
         
     }
     
@@ -334,26 +299,35 @@ public class Edit extends JFrame implements ActionListener{
         if (event.getSource() == btnValider) {
             dt = new ActionsBD();
             
-            //contenuMatricule = champMatricule.getText();
-            //contenuPrenom = champPrenom.getText();
+            contenuMatricule = champMatricule.getText();
             contenuNom = champNom.getText();
-            /*
+            contenuPrenom = champPrenom.getText();
             contenuAdress = champAdress.getText();
             contenuResponsable = champResponsable.getText();
             contenuHobby = champHobby.getText();
-            */
+            contenuPseudo = champPseudo.getText();
+               
+            try {
+                String str = champAnneeNaiss.getText()+"-"+Integer.toString(champMoisNaiss.getSelectedIndex()+1)+"-"+champJourNaiss.getText();
+                contenuDateNaiss = Constantes.DATE_FORMAT.parse(str);
+                str = champAnneeEmb.getText()+"-"+Integer.toString(champMoisEmb.getSelectedIndex()+1)+"-"+champJourEmb.getText();
+                contenuDateEmb = Constantes.DATE_FORMAT.parse(str);
+            } catch (ParseException ex) {
+                Logger.getLogger(Add.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "Error date", "Echec", JOptionPane.ERROR_MESSAGE);
+            }
             
-            progrBean.setNom(contenuNom);
-            //progrBean.setAdresse(contenuAdress);
+            progrBean = new ProgrammeurBean(
+                    contenuMatricule, contenuNom, contenuPrenom, contenuAdress, contenuResponsable,
+                    contenuHobby, contenuPseudo, contenuDateEmb, contenuDateNaiss
+            );
+            System.out.println("Valider  :"+progrBean.toString());
+            dt.addProgrammeur(progrBean);
             
-            dt.setProgrammeur(progrBean);
-            System.out.println("Valider"+progrBean.toString());
-            //JOptionPane.showMessageDialog(this, "Programmeur introuvable", "Echec", JOptionPane.ERROR_MESSAGE);
             dt.fermerRessources();
         }
-        if (event.getSource() == btnRechercher) {
+        if (event.getSource() == btnReinit) {
             dt = new ActionsBD();
-            progrBean = dt.getProgrammeur(this.champNom.getText());
             if (progrBean == null) {
                 JOptionPane.showMessageDialog(this, "Programmeur introuvable", "Echec", JOptionPane.ERROR_MESSAGE);
             } else {

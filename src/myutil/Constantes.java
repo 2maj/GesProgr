@@ -36,7 +36,7 @@ public class Constantes {
     
     public static final Font DEFAULTFONT = new Font("Sans-Serif",Font.TRUETYPE_FONT, 12);
     
-    public static final SimpleDateFormat DATE_FORMAT= new SimpleDateFormat("Y-M-d");
+    public static final SimpleDateFormat DATE_FORMAT= new SimpleDateFormat("Y-mm-d");
     
     public static final SimpleDateFormat DATE_FORMAT_Y= new SimpleDateFormat("Y");
     
