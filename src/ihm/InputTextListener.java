@@ -5,8 +5,6 @@
  */
 package ihm;
 
-import java.sql.Array;
-import java.util.ArrayList;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;

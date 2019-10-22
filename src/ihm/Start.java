@@ -16,9 +16,9 @@ package ihm;
 public class Start {
 
     public static void main(String[] args) {
-        //Edit ihm = new Edit();
+        Edit ihm = new Edit();
         //Vue ihm = new Vue();
-        Add ihm = new Add();
+        //Add ihm = new Add();
         ihm.init();
     }
 

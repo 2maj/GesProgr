@@ -53,12 +53,15 @@ public class Edit extends VueEditField {
         addingListenerToField();
         
         champMatricule.setText(progrBean.getMatricule());
+        champMatricule.setEditable(false); //Désactiver le champ matricule
         champNom.setText(progrBean.getNom());
         champPrenom.setText(progrBean.getPrenom());
         champAdress.setText(progrBean.getAdresse());
         champResponsable.setText(progrBean.getResponsable());
         champHobby.setText(progrBean.getHobby());
         champPseudo.setText(progrBean.getPseudo());
+        champPseudo.setEditable(false);
+
         champJourEmb.setText(Constantes.DATE_FORMAT_D.format(progrBean.getDateEmb()));
         champJourNaiss.setText(Constantes.DATE_FORMAT_D.format(progrBean.getDateNaiss()));
         champMoisNaiss.setSelectedIndex(Integer.parseInt(Constantes.DATE_FORMAT_M.format(progrBean.getDateNaiss())) -1);
@@ -93,9 +96,55 @@ public class Edit extends VueEditField {
     }
     
     @Override
+    /*
     public void actionPerformed(ActionEvent event) {
+        try{
+            dt = new ActionsBD();
+
+
+            if (event.getSource() == btnValider) {
+
+
+                contenuPrenom = champPrenom.getText();
+
+                contenuNom = champNom.getText();
+
+                contenuAdress = champAdress.getText();
+                contenuResponsable = champResponsable.getText();
+                contenuHobby = champHobby.getText();
+
+                progrBean.setNom(contenuNom);
+                progrBean.setPrenom(contenuPrenom);
+                progrBean.setAdresse(contenuAdress);
+                progrBean.setHobby(contenuHobby);
+
+                contenuDateNaiss = progrBean.convertFromStringToDate(champAnneeNaiss.getText(), champMoisNaiss.getSelectedIndex()+1, champJourNaiss.getText());
+
+                contenuDateEmb = progrBean.convertFromStringToDate(champAnneeEmb.getText(), champMoisEmb.getSelectedIndex()+1, champJourEmb.getText());
+
+                dt.setProgrammeur(progrBean);
+                System.out.println("Valider"+contenuDateNaiss);
+
+
+            }
+
+            if(event.getSource() == btnAnnuler){
+
+            }
+            dt.fermerRessources();
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this, "Programmeur introuvable", "Echec", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    */
+    public void actionPerformed(ActionEvent event) {
+        boolean condition = true;
         if (event.getSource() == btnValider) {
             dt = new ActionsBD();
+            
+            
+             
+             
             
             contenuPrenom = champPrenom.getText();
             contenuNom = champNom.getText();
@@ -104,6 +153,58 @@ public class Edit extends VueEditField {
             contenuResponsable = champResponsable.getText();
             contenuHobby = champHobby.getText();
             
+            String cMatricule = String.valueOf(champMatricule.getText());
+            String cAnneeNaiss =  champAnneeNaiss.getText();
+            String cMoisNaiss = Integer.toString(champMoisNaiss.getSelectedIndex()+1);
+            String cJourNaiss = champJourNaiss.getText();
+            
+            String cAnneeEmb = champAnneeEmb.getText();
+            String cMoisEmb = Integer.toString(champMoisEmb.getSelectedIndex()+1);
+            String cJourEmb = champJourEmb.getText();
+            
+            //TODO Faire des fonctions isInteger pour les champs jour et annee  et isContainLetter pour Matricule, nom ...
+            /*
+            
+            if(isInteger(cAnneeNaiss) || isInteger(cMoisNaiss) || !isInteger(cJourNaiss) || !isInteger(cJourEmb)){
+                condition = false;
+                //JOptionPane.showMessageDialog(this, "Mauvais matricule", "Echec", JOptionPane.ERROR_MESSAGE);
+                      
+            }
+            */
+            
+        
+            
+            if ((cJourEmb==cJourNaiss) && (cAnneeEmb==cAnneeNaiss) && (cMoisEmb==cMoisNaiss)){
+                condition = false;
+            }
+        
+            if(!checkday(cJourNaiss) || !checkday(cJourEmb)){
+                condition = false;
+            }
+            
+            if (checkyear(cAnneeEmb) == false || checkyear(cAnneeEmb) == false){
+            condition = false;
+            }
+            
+             if (!checkvalue(contenuPrenom) || !checkvalue(contenuNom) 
+                 || !checkvalue(contenuAdress) || !checkvalue(contenuResponsable) ||
+                     !checkvalue(contenuHobby)){
+                    condition = false;
+                       // JOptionPane.showMessageDialog(this, "Il y a une ou plusieurs valeurs nulles", "Echec", JOptionPane.ERROR_MESSAGE);
+                      }
+             
+             if (isInteger(contenuPrenom) || isInteger(contenuNom) 
+                 || isInteger(contenuResponsable) ||
+                     isInteger(contenuHobby)
+                     ){
+                        condition = false;
+                        //OptionPane.showMessageDialog(this, "Mauvais contenu dans l'un des champs", "Echec", JOptionPane.ERROR_MESSAGE);
+                      }
+             if (!condition){
+                 JOptionPane.showMessageDialog(this, "Erreur de saisie", "Programmeur introuvable", JOptionPane.ERROR_MESSAGE);
+                
+             }
+             else{
             progrBean.setNom(contenuNom);
             progrBean.setPrenom(contenuPrenom);
             progrBean.setAdresse(contenuAdress);
@@ -118,11 +219,9 @@ public class Edit extends VueEditField {
             System.out.println("Valider"+contenuDateNaiss);
             //JOptionPane.showMessageDialog(this, "Programmeur introuvable", "Echec", JOptionPane.ERROR_MESSAGE);
             dt.fermerRessources();
-        }
-        
-        if(event.getSource() == btnAnnuler){
-            
-        }
-    }
+             }
+           
+             }
     
+    }
 }

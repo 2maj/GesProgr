@@ -41,6 +41,7 @@ public class ActionsBD {
     public ActionsBD() {
         try {
             dbConn = DriverManager.getConnection(Constantes.URL, Constantes.USER, Constantes.MDP);
+            System.out.println(dbConn.getMetaData().getDatabaseProductName());
         } catch (SQLException sqle) {
             Logger.getLogger(ActionsBD.class.getName()).log(Level.SEVERE, null, sqle);
         }

@@ -39,6 +39,11 @@ public class ProgrammeurBean {
          this.dateNaiss = dateNaiss;
          
     }
+     
+    public static Date convertFromStringToDate(String year, int month, String day){
+        String strNaiss = year+"-"+Integer.toString(month)+"-"+day;
+        return Date.valueOf(strNaiss);
+    }
 
     @Override
     public String toString() {

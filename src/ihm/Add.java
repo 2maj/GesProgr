@@ -68,42 +68,46 @@ public class Add extends VueEditField{
    
     @Override
     public void actionPerformed(ActionEvent event) {
-        if (event.getSource() == btnValider) {
+        try{
             dt = new ActionsBD();
-            
-            contenuMatricule = champMatricule.getText();
-            contenuNom = champNom.getText();
-            contenuPrenom = champPrenom.getText();
-            contenuAdress = champAdress.getText();
-            contenuResponsable = champResponsable.getText();
-            contenuHobby = champHobby.getText();
-            contenuPseudo = champPseudo.getText();
-               
-            String strNaiss = champAnneeNaiss.getText()+"-"+Integer.toString(champMoisNaiss.getSelectedIndex()+1)+"-"+champJourNaiss.getText();
-            contenuDateNaiss = java.sql.Date.valueOf(strNaiss);
-            String strEmb = champAnneeEmb.getText()+"-"+Integer.toString(champMoisEmb.getSelectedIndex()+1)+"-"+champJourEmb.getText();
-            contenuDateEmb = java.sql.Date.valueOf(strEmb);
-            
-            progrBean = new ProgrammeurBean(contenuMatricule, contenuNom, contenuPrenom, contenuAdress, contenuResponsable, contenuHobby, contenuPseudo, contenuDateEmb, contenuDateNaiss);
-            System.out.println("Valider  :"+progrBean.toString());
-            dt.addProgrammeur(progrBean);
-            
-            dt.fermerRessources();
-        }
-        if (event.getSource() == btnReinit) {
-            dt = new ActionsBD();
-            if (progrBean == null) {
-                JOptionPane.showMessageDialog(this, Constantes.PROG_NOT_FOUND, "Echec", JOptionPane.ERROR_MESSAGE);
-            } else {
-                contenuTextArea = progrBean.toString();
-                //zoneAffichageProgrammeurs.setText(contenuTextArea);
+            if (event.getSource() == btnValider) {
+
+
+                contenuMatricule = champMatricule.getText();
+                contenuNom = champNom.getText();
+                contenuPrenom = champPrenom.getText();
+                contenuAdress = champAdress.getText();
+                contenuResponsable = champResponsable.getText();
+                contenuHobby = champHobby.getText();
+                contenuPseudo = champPseudo.getText();
+
+                contenuDateNaiss = progrBean.convertFromStringToDate(champAnneeNaiss.getText(), champMoisNaiss.getSelectedIndex()+1, champJourNaiss.getText());
+
+                contenuDateEmb = progrBean.convertFromStringToDate(champAnneeEmb.getText(), champMoisEmb.getSelectedIndex()+1, champJourEmb.getText());
+
+                progrBean = new ProgrammeurBean(contenuMatricule, contenuNom, contenuPrenom, contenuAdress, contenuResponsable, contenuHobby, contenuPseudo, contenuDateEmb, contenuDateNaiss);
+                System.out.println("Valider  :"+progrBean.toString());
+                dt.addProgrammeur(progrBean);
+
+                dt.fermerRessources();
+            }
+            if (event.getSource() == btnReinit) {
+                dt = new ActionsBD();
+                if (progrBean == null) {
+                    JOptionPane.showMessageDialog(this, Constantes.PROG_NOT_FOUND, "Echec", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    contenuTextArea = progrBean.toString();
+                }
+
+
             }
 
+            if(event.getSource() == btnAnnuler){
+
+            }
             dt.fermerRessources();
-        }
-        
-        if(event.getSource() == btnAnnuler){
-            
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this, "Vous n'êtes pas connect", "Echec", JOptionPane.ERROR_MESSAGE);
         }
     }
     

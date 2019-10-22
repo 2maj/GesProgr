@@ -15,6 +15,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import static java.lang.Character.isDigit;
 import java.sql.Date;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -27,14 +28,13 @@ import myutil.Constantes;
 public abstract class VueEditField extends JFrame implements ActionListener{
     // Déclaration des attributs
     // L'initialisation se fera "en local" dans des méthodes
-     JButton btnAnnuler;
-     JButton btnValider;
-     JButton btnReinit;
-     JButton btnRechercher;
-    
-     JLabel labelMatricule;
+    JButton btnAnnuler;
+    JButton btnValider;
+    JButton btnReinit;
+    JButton btnRechercher;
 
-    
+    JLabel labelMatricule;
+
     JLabel labelNom;
     JLabel labelPrenom;
     JLabel labelAdress;
@@ -77,6 +77,7 @@ public abstract class VueEditField extends JFrame implements ActionListener{
     java.sql.Date contenuDateNaiss;
     java.sql.Date contenuDateEmb;
     ActionsBD dt;
+     
     
     public abstract void init();
     
@@ -85,7 +86,6 @@ public abstract class VueEditField extends JFrame implements ActionListener{
         labelMatricule.setForeground(Color.white);
         labelMatricule.setFont(Constantes.DEFAULTFONT);
         champMatricule = new JTextField();
-        //champMatricule.setEditable(false);
         
         champMatricule.setColumns(Constantes.COLUMNS);
         
@@ -133,7 +133,6 @@ public abstract class VueEditField extends JFrame implements ActionListener{
         JPanel PseudoPanel = new JPanel(new GridLayout());
         PseudoPanel.add(labelPseudo);
         PseudoPanel.add(champPseudo);
-        //champPseudo.setEditable(false);
         editPanel.add(PseudoPanel);
         
         labelResponsable = new JLabel(Constantes.RESPONSABLE);
@@ -219,6 +218,58 @@ public abstract class VueEditField extends JFrame implements ActionListener{
     
     public JPanel getPanelMenu(){
         return this.mainPanel;
+    }
+    
+    public boolean checkday(String text){
+        char[] stringToCharArray = text.toCharArray();
+        //int len = text.length();
+        boolean tmp = true;
+        int result = Integer.parseInt(text);
+        
+        if (result<=0 || result > 32){
+            tmp = false;
+        }
+        
+        return tmp;
+    }
+    
+    public boolean checkyear(String text){
+        char[] stringToCharArray = text.toCharArray();
+        int len = text.length();
+        int result = Integer.parseInt(text);
+        boolean tmp = true;
+        if(result>2019 || result<1950){
+        tmp = false;
+         }
+        
+        if(len!=4){
+            tmp = false;
+        }
+        return tmp;
+        
+    }
+    
+    
+    
+    public boolean checkvalue(String text){
+        if (text.length() == 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
+    
+    public boolean isInteger(String text){
+        
+        char[] stringToCharArray = text.toCharArray();
+        int len = text.length();
+        boolean tmp = true;
+        for (int i = 0; i<len && tmp ; i++){
+            if (isDigit(stringToCharArray[i])){
+                tmp = false;
+            }
+        }
+        return tmp;
     }
     
     public void btnBottom(){
