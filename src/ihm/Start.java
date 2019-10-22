@@ -7,9 +7,11 @@ package ihm;
 
 /**
  *
- * @author Jacques
- * Cette classe contient le point d'entrée du programme, 
- * c'est-à-dire la méthode "main"
+ * @author source code : Jacques
+ * @author improvement: ADJI Moussa
+ * @author improvement: KEBIECHE Wael
+ * @author improvement: BRIGUI Achref
+ * 
  */
 public class Start {
 

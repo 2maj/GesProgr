@@ -1,18 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ *
+ * @author source code : Jacques
+ * @author improvement: ADJI Moussa
+ * @author improvement: KEBIECHE Wael
+ * @author improvement: BRIGUI Achref
+ * 
  */
 package data;
 
 import myutil.Constantes;
 
-import java.util.Date;
+import java.sql.Date;
 
-/**
- *
- * @author Jacques
- */
 public class ProgrammeurBean {
 
     private String matricule;
@@ -22,8 +21,8 @@ public class ProgrammeurBean {
     private String pseudo;
     private String responsable;
     private String hobby;
-    private Date dateEmb;
-    private Date dateNaiss;
+    private java.sql.Date dateEmb;
+    private java.sql.Date dateNaiss;
 
     public ProgrammeurBean() {
     }

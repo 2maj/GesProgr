@@ -1,17 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ *
+ * @author source code : Jacques
+ * @author improvement: ADJI Moussa
+ * @author improvement: KEBIECHE Wael
+ * @author improvement: BRIGUI Achref
+ * 
  */
 package myutil;
 
 import java.awt.Font;
 import java.text.SimpleDateFormat;
 
-/**
- *
- * @author Jacques
- */
+
 public class Constantes {
 
     public static final String OCCUPATION = "Programmeur";
@@ -33,14 +33,41 @@ public class Constantes {
     public static final String REQUETE_INSERT = "INSERT INTO PROGRAMMEUR"
             + "(MATRICULE, NOM, PRENOM, ADRESSE, PSEUDO, RESPONSABLE, HOBBY, DATE_NAISS, DATE_EMB)"
             + " VALUES(?,?,?,?,?,?,?,?,?)";
+    public static final String MATRICULE = "Matricule";
+    
+    public static final String NOM = "Nom";
+    
+    public static final String PRENOM = "Prénom";
+    
+    public static final String ADRESSE = "Adresse";
+    
+    public static final String HOBBY = "Hobby";
+    
+    public static final String RESPONSABLE = "Responsable";
+    
+    public static final String PSEUDO = "Pseudo";
+    
+    public static final String DATE_NAISS = "Date de naissance";
+    
+    public static final String DATE_EMB = "Date d'embauche";
+    
+    public static final String[] OPTIONSMOIS = {"01","02","03","04","05","06","07","08","09","10","11","12"};
+
+    public static final String JOUR = "jour";
+    
+    public static final String ANNEE = "année";
+    
+    public static final String PROG_NOT_FOUND = "Programmeur introuvable";
+    
+    public static final int COLUMNS = 10;
     
     public static final Font DEFAULTFONT = new Font("Sans-Serif",Font.TRUETYPE_FONT, 12);
     
-    public static final SimpleDateFormat DATE_FORMAT= new SimpleDateFormat("Y-mm-d");
+    public static final SimpleDateFormat DATE_FORMAT= new SimpleDateFormat("yyyy-MM-dd");
     
-    public static final SimpleDateFormat DATE_FORMAT_Y= new SimpleDateFormat("Y");
+    public static final SimpleDateFormat DATE_FORMAT_Y= new SimpleDateFormat("yyyy");
     
-    public static final SimpleDateFormat DATE_FORMAT_M= new SimpleDateFormat("M");
+    public static final SimpleDateFormat DATE_FORMAT_M= new SimpleDateFormat("MM");
     
     public static final SimpleDateFormat DATE_FORMAT_D= new SimpleDateFormat("d");
 }

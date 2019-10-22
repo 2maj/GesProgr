@@ -11,16 +11,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
+//import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import myutil.Constantes;
 
 /**
  *
- * @author Jacques
+ * @author source code : Jacques
+ * @author improvement: ADJI Moussa
+ * @author improvement: KEBIECHE Wael
+ * @author improvement: BRIGUI Achref
+ * 
  */
 public class ActionsBD {
 
@@ -77,8 +80,8 @@ public class ActionsBD {
                         rs.getString("MATRICULE"), rs.getString("NOM"),
                         rs.getString("PRENOM"), rs.getString("ADRESSE"),
                         rs.getString("PSEUDO") ,rs.getString("RESPONSABLE"),
-                        rs.getString("HOBBY"), convertFromSQLDateToJAVADate(rs.getDate("DATE_NAISS")),
-                        convertFromSQLDateToJAVADate(rs.getDate("DATE_EMB"))
+                        rs.getString("HOBBY"), rs.getDate("DATE_NAISS"),
+                        rs.getDate("DATE_EMB")
                 );
                 listeProgrammeurs.add(prog);
             }
@@ -89,26 +92,24 @@ public class ActionsBD {
     }
     
     /**
-     * 
-     * @param p
+     * Modifier un programmeur depuis la base de données à partir des informations saisies
+     * @param p le progrommeur modifié via l'interface
      */
     public void setProgrammeur(ProgrammeurBean p){
         try {
             //MATRICULE, NOM, PRENOM, ADRESSE, PSEUDO, RESPONSABLE, HOBBY, DATE_NAISS, DATE_EMB
             pstmt = dbConn.prepareStatement(Constantes.REQUETE_UPDATE);
-            //pstmt.setString(1, p.getMatricule());
             pstmt.setString(1, p.getNom());
             pstmt.setString(2, p.getPrenom());
             pstmt.setString(3, p.getAdresse());
             pstmt.setString(4, p.getPseudo());
             pstmt.setString(5, p.getResponsable());
             pstmt.setString(6, p.getHobby());
-            pstmt.setDate(7, convertFromSQLDateToJAVADate(p.getDateNaiss()));
-            pstmt.setDate(8, convertFromSQLDateToJAVADate(p.getDateEmb()));
+            pstmt.setDate(7, p.getDateNaiss());
+            pstmt.setDate(8, p.getDateEmb());
             pstmt.setString(9, p.getMatricule());
             pstmt.executeUpdate();
             
-            System.out.println("Setting");
         } catch (SQLException sqle) {
             Logger.getLogger(ActionsBD.class.getName()).log(Level.SEVERE, null, sqle);
         }
@@ -119,18 +120,15 @@ public class ActionsBD {
             //MATRICULE, NOM, PRENOM, ADRESSE, PSEUDO, RESPONSABLE, HOBBY, DATE_NAISS, DATE_EMB
             pstmt = dbConn.prepareStatement(Constantes.REQUETE_INSERT);
             pstmt.setString(1, p.getMatricule());
-            pstmt.setString(1, p.getNom());
-            pstmt.setString(2, p.getPrenom());
-            pstmt.setString(3, p.getAdresse());
-            pstmt.setString(4, p.getPseudo());
-            pstmt.setString(5, p.getResponsable());
-            pstmt.setString(6, p.getHobby());
-            pstmt.setDate(7, convertFromSQLDateToJAVADate(p.getDateNaiss()));
-            pstmt.setDate(8, convertFromSQLDateToJAVADate(p.getDateEmb()));
-            pstmt.setString(9, p.getMatricule());
+            pstmt.setString(2, p.getNom());
+            pstmt.setString(3, p.getPrenom());
+            pstmt.setString(4, p.getAdresse());
+            pstmt.setString(5, p.getPseudo());
+            pstmt.setString(6, p.getResponsable());
+            pstmt.setString(7, p.getHobby());
+            pstmt.setDate(8, p.getDateNaiss());
+            pstmt.setDate(9, p.getDateEmb());
             pstmt.executeUpdate();
-            
-            System.out.println("Adding");
         } catch (SQLException sqle) {
             Logger.getLogger(ActionsBD.class.getName()).log(Level.SEVERE, null, sqle);
         }
@@ -141,7 +139,7 @@ public class ActionsBD {
      * programmeur sous la forme d'un Java Bean Cette méthode est utilisée pour
      * rechercher un progammeur via son matricule
      *
-     * @param nom Le nom saisi par l'utilisateur pour lancer la recherche
+     * @param matricule Le nom saisi par l'utilisateur pour lancer la recherche
      * @return prog Une variable de type ProgrammeurBean
      *
      */
@@ -172,19 +170,19 @@ public class ActionsBD {
         return prog;
     }
     
-    public static java.util.Date convertFromSQLDateToJAVADate(
+    /*public static java.util.Date convertFromSQLDateToJAVADate(
             java.sql.Date sqlDate) {
         java.util.Date javaDate = null;
         if (sqlDate != null) {
             javaDate = new Date(sqlDate.getTime());
         }
         return javaDate;
-    }
+    }*/
     
-    public static java.sql.Date convertFromSQLDateToJAVADate(
+    /*public static java.sql.Date convertFromJAVADateToSqlDate(
              java.util.Date javaDate) {
         return new java.sql.Date (javaDate.getTime());
-    }
+    }*/
 
     /**
      * Cette méthode permet de construire la chaîne de caractères qui sera
