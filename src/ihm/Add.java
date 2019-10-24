@@ -18,6 +18,7 @@ import java.sql.Date;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 import javax.swing.border.EmptyBorder;
 import myutil.Constantes;
 
@@ -68,11 +69,13 @@ public class Add extends VueEditField{
    
     @Override
     public void actionPerformed(ActionEvent event) {
+        boolean condition = true;
         try{
+            
             dt = new ActionsBD();
             if (event.getSource() == btnValider) {
 
-
+                
                 contenuMatricule = champMatricule.getText();
                 contenuNom = champNom.getText();
                 contenuPrenom = champPrenom.getText();
@@ -80,6 +83,53 @@ public class Add extends VueEditField{
                 contenuResponsable = champResponsable.getText();
                 contenuHobby = champHobby.getText();
                 contenuPseudo = champPseudo.getText();
+                
+                String cMatricule = String.valueOf(champMatricule.getText());
+                String cAnneeNaiss =  champAnneeNaiss.getText();
+                String cMoisNaiss = Integer.toString(champMoisNaiss.getSelectedIndex()+1);
+                String cJourNaiss = champJourNaiss.getText();
+
+                String cAnneeEmb = champAnneeEmb.getText();
+                String cMoisEmb = Integer.toString(champMoisEmb.getSelectedIndex()+1);
+                String cJourEmb = champJourEmb.getText();
+                
+                if ((cJourEmb==cJourNaiss) && (cAnneeEmb==cAnneeNaiss) && (cMoisEmb==cMoisNaiss)){
+                condition = false;
+            }
+        
+            if(!checkday(cJourNaiss) || !checkday(cJourEmb)){
+                condition = false;
+            }
+            
+            if (!checkyear(cAnneeEmb)|| !checkyear(cAnneeEmb)){
+            condition = false;
+            }
+            
+             if (!checkvalue(contenuPrenom) || !checkvalue(contenuNom) 
+                 || !checkvalue(contenuAdress) || !checkvalue(contenuResponsable) ||
+                     !checkvalue(contenuHobby)){
+                    condition = false;
+                       // JOptionPane.showMessageDialog(this, "Il y a une ou plusieurs valeurs nulles", "Echec", JOptionPane.ERROR_MESSAGE);
+                      }
+             
+             if (!isInteger(cMatricule) ||!isInteger(cJourNaiss) ||!isInteger(cJourEmb)){
+                 condition = false;
+             }
+             
+             if (!isNotInteger(contenuPrenom) || !isNotInteger(contenuNom) 
+                 || !isNotInteger(contenuResponsable) ||
+                     !isNotInteger(contenuHobby)
+                     ){
+                        condition = false;
+                        //JOptionPane.showMessageDialog(this, "Erreur de saisie", "Programmeur introuvable", JOptionPane.ERROR_MESSAGE);
+                        //OptionPane.showMessageDialog(this, "Mauvais contenu dans l'un des champs", "Echec", JOptionPane.ERROR_MESSAGE);
+                      }
+             
+             if (!condition){
+                 JOptionPane.showMessageDialog(this, "Erreur de saisie", "Programmeur introuvable", JOptionPane.ERROR_MESSAGE);
+             }else{
+                
+                
 
                 contenuDateNaiss = progrBean.convertFromStringToDate(champAnneeNaiss.getText(), champMoisNaiss.getSelectedIndex()+1, champJourNaiss.getText());
 
@@ -90,7 +140,7 @@ public class Add extends VueEditField{
                 dt.addProgrammeur(progrBean);
 
                 dt.fermerRessources();
-            }
+            }}
             if (event.getSource() == btnReinit) {
                 dt = new ActionsBD();
                 if (progrBean == null) {
@@ -104,11 +154,12 @@ public class Add extends VueEditField{
 
             if(event.getSource() == btnAnnuler){
 
-            }
+            }}
+            catch( Exception e){
+                    JOptionPane.showMessageDialog(this, "Erreur", "Arret de la connexion", JOptionPane.ERROR_MESSAGE);
+                    }
             dt.fermerRessources();
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(this, "Vous n'êtes pas connect", "Echec", JOptionPane.ERROR_MESSAGE);
-        }
     }
     
-}
+        
+    }

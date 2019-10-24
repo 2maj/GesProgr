@@ -18,6 +18,7 @@ import java.sql.Date;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 import javax.swing.border.EmptyBorder;
 import myutil.Constantes;
 
@@ -137,6 +138,11 @@ public class Edit extends VueEditField {
         }
     }
     */
+    
+    /**
+     * Avant d'éffectuer le traitement sur le contenu des champs récupérés de l'utilisateur nous allons vérifier que cest données sont correctes.
+    */
+    
     public void actionPerformed(ActionEvent event) {
         boolean condition = true;
         if (event.getSource() == btnValider) {
@@ -162,15 +168,6 @@ public class Edit extends VueEditField {
             String cMoisEmb = Integer.toString(champMoisEmb.getSelectedIndex()+1);
             String cJourEmb = champJourEmb.getText();
             
-            //TODO Faire des fonctions isInteger pour les champs jour et annee  et isContainLetter pour Matricule, nom ...
-            /*
-            
-            if(isInteger(cAnneeNaiss) || isInteger(cMoisNaiss) || !isInteger(cJourNaiss) || !isInteger(cJourEmb)){
-                condition = false;
-                //JOptionPane.showMessageDialog(this, "Mauvais matricule", "Echec", JOptionPane.ERROR_MESSAGE);
-                      
-            }
-            */
             
         
             
@@ -182,7 +179,7 @@ public class Edit extends VueEditField {
                 condition = false;
             }
             
-            if (checkyear(cAnneeEmb) == false || checkyear(cAnneeEmb) == false){
+            if (!checkyear(cAnneeEmb)|| !checkyear(cAnneeEmb)){
             condition = false;
             }
             
@@ -193,13 +190,21 @@ public class Edit extends VueEditField {
                        // JOptionPane.showMessageDialog(this, "Il y a une ou plusieurs valeurs nulles", "Echec", JOptionPane.ERROR_MESSAGE);
                       }
              
-             if (isInteger(contenuPrenom) || isInteger(contenuNom) 
-                 || isInteger(contenuResponsable) ||
-                     isInteger(contenuHobby)
+             if (!isInteger(cMatricule) ||!isInteger(cJourNaiss) ||!isInteger(cJourEmb)){
+                 condition = false;
+             }
+             
+             if (!isNotInteger(contenuPrenom) || !isNotInteger(contenuNom) 
+                 || !isNotInteger(contenuResponsable) ||
+                     !isNotInteger(contenuHobby)
                      ){
                         condition = false;
+                        //JOptionPane.showMessageDialog(this, "Erreur de saisie", "Programmeur introuvable", JOptionPane.ERROR_MESSAGE);
                         //OptionPane.showMessageDialog(this, "Mauvais contenu dans l'un des champs", "Echec", JOptionPane.ERROR_MESSAGE);
                       }
+             
+            
+             
              if (!condition){
                  JOptionPane.showMessageDialog(this, "Erreur de saisie", "Programmeur introuvable", JOptionPane.ERROR_MESSAGE);
                 

@@ -220,44 +220,59 @@ public abstract class VueEditField extends JFrame implements ActionListener{
         return this.mainPanel;
     }
     
+  /**
+ * Vérifie que le jour du mois est bien compris entre 1 et 31.
+ */
+    
     public boolean checkday(String text){
-        char[] stringToCharArray = text.toCharArray();
-        //int len = text.length();
-        boolean tmp = true;
         int result = Integer.parseInt(text);
-        
-        if (result<=0 || result > 32){
+        boolean tmp = true;
+        if (result <=0 || result >= 32){
             tmp = false;
         }
-        
         return tmp;
     }
     
+ /**
+ * Vérifie que l'année ne dépasse pas l'année courante
+ */
     public boolean checkyear(String text){
+        int result = Integer.parseInt(text);
+        boolean tmp = true;
+        
+        if (result <=1950 || result >= 2019){
+            tmp = false;
+        }
+        return tmp;
+    }
+    
+    
+  /**
+ * Vérifie que le contenu du champs n'est pas vide
+ */ 
+    public boolean checkvalue(String text){
+        return (text.length() != 0);
+    }
+    
+ /**
+ * Vérifie que le champs n'est composé que de chiffres
+ */   
+    public boolean isNotInteger(String text){
+        
         char[] stringToCharArray = text.toCharArray();
         int len = text.length();
-        int result = Integer.parseInt(text);
         boolean tmp = true;
-        if(result>2019 || result<1950){
-        tmp = false;
-         }
-        
-        if(len!=4){
-            tmp = false;
+        for (int i = 0; i<len && tmp ; i++){
+            if (isDigit(stringToCharArray[i])){
+                tmp = false;
+            }
         }
         return tmp;
-        
     }
-    
-    
-    
-    public boolean checkvalue(String text){
-        if (text.length() == 0){
-            return false;
-        }else{
-            return true;
-        }
-    }
+ 
+/**
+ * Vérifie que le champs n'est composé que de chiffres
+ */    
     
     public boolean isInteger(String text){
         
@@ -265,7 +280,7 @@ public abstract class VueEditField extends JFrame implements ActionListener{
         int len = text.length();
         boolean tmp = true;
         for (int i = 0; i<len && tmp ; i++){
-            if (isDigit(stringToCharArray[i])){
+            if (!isDigit(stringToCharArray[i])){
                 tmp = false;
             }
         }
