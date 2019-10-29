@@ -19,6 +19,7 @@ public class Start {
         Edit ihm = new Edit();
         //Vue ihm = new Vue();
         //Add ihm = new Add();
+        Search ihm = new Search();
         ihm.init();
     }
 
